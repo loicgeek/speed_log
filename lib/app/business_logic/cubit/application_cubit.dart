@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:appwrite/models.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:test_app_write/auth/data/auth_service.dart';
+import 'package:parcel_delivery/auth/data/auth_service.dart';
 
 part 'application_state.dart';
 

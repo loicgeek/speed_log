@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:test_app_write/application.dart';
-import 'package:test_app_write/bootstrap.dart';
+import 'package:parcel_delivery/application.dart';
+import 'package:parcel_delivery/bootstrap.dart';
 
 void main() {
   bootstrap(builder: () {

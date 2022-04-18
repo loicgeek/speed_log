@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:test_app_write/app/utils/utils.dart';
-import 'package:test_app_write/auth/data/auth_service.dart';
+import 'package:parcel_delivery/app/utils/utils.dart';
+import 'package:parcel_delivery/auth/data/auth_service.dart';
 
 part 'login_state.dart';
 

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:test_app_write/auth/presentation/pages/login_page.dart';
-import 'package:test_app_write/auth/presentation/pages/register_page.dart';
-import 'package:test_app_write/chat/presentation/users_list.dart';
-
+import 'package:parcel_delivery/app/presentation/home_page.dart';
+import 'package:parcel_delivery/auth/presentation/pages/login_page.dart';
+import 'package:parcel_delivery/auth/presentation/pages/register_page.dart';
 import './route_path.dart';
 
 class AppRouter {
@@ -26,8 +25,8 @@ class AppRouter {
         return createRoute(const LoginPage());
       case RoutePath.register:
         return createRoute(const RegisterPage());
-      case RoutePath.usersList:
-        return createRoute(const UsersList());
+      case RoutePath.home:
+        return createRoute(const HomePage());
 
       default:
         return null;

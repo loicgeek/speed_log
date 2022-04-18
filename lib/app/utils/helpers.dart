@@ -1,5 +1,5 @@
 class Helpers {
   static String extractErrorMessage(Object e) {
-    return "";
+    return e.toString();
   }
 }

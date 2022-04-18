@@ -1,10 +1,10 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:test_app_write/app/presentation/router/router.dart';
-import 'package:test_app_write/app/presentation/theme/theme.dart';
-import 'package:test_app_write/app/presentation/widgets/widgets.dart';
-import 'package:test_app_write/auth/data/auth_service.dart';
-import 'package:test_app_write/locator.dart';
+import 'package:parcel_delivery/app/presentation/router/router.dart';
+import 'package:parcel_delivery/app/presentation/theme/theme.dart';
+import 'package:parcel_delivery/app/presentation/widgets/widgets.dart';
+import 'package:parcel_delivery/auth/data/auth_service.dart';
+import 'package:parcel_delivery/locator.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);

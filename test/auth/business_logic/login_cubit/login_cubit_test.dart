@@ -3,9 +3,9 @@ import 'package:appwrite/models.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:test_app_write/app/data/api_client.dart';
-import 'package:test_app_write/auth/business_logic/login_cubit/login_cubit.dart';
-import 'package:test_app_write/auth/data/auth_service.dart';
+import 'package:parcel_delivery/app/data/api_client.dart';
+import 'package:parcel_delivery/auth/business_logic/login_cubit/login_cubit.dart';
+import 'package:parcel_delivery/auth/data/auth_service.dart';
 
 class MockApiClient extends Mock implements ApiClient {}
 

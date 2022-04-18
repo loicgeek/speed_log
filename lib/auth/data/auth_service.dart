@@ -1,6 +1,6 @@
 import 'package:appwrite/models.dart';
-import 'package:test_app_write/app/data/api_client.dart';
-import 'package:test_app_write/app/utils/collection_ids.dart';
+import 'package:parcel_delivery/app/data/api_client.dart';
+import 'package:parcel_delivery/app/utils/collection_ids.dart';
 
 class AuthService {
   final ApiClient apiClient;

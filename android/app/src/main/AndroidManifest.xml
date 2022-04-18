@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ntech_services.test_app_write">
+    package="com.ntech_services.parcel_delivery">
    <application
-        android:label="test_app_write"
+        android:label="parcel_delivery"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

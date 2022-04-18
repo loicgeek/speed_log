@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(test_app_write LANGUAGES CXX)
+project(parcel_delivery LANGUAGES CXX)
 
-set(BINARY_NAME "test_app_write")
+set(BINARY_NAME "parcel_delivery")
 
 cmake_policy(SET CMP0063 NEW)
 

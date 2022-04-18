@@ -75,14 +75,14 @@ class AppLoader {
       LoaderController(loader: BounceLargeColorLoader());
 }
 
-class _LoaderDialog extends StatefulWidget {
+class LoaderDialog extends StatefulWidget {
   final Widget loader;
   final StreamController<String> controller;
   BuildContext? context;
 
   /// Create a loader dialog that cannot be
   /// dismissed by pressing the back button.
-  _LoaderDialog({
+  LoaderDialog({
     required this.loader,
     required this.controller,
     this.context,
@@ -108,7 +108,7 @@ class _LoaderDialog extends StatefulWidget {
   }
 }
 
-class _LoaderDialogState extends State<_LoaderDialog> {
+class _LoaderDialogState extends State<LoaderDialog> {
   bool loading = true;
 
   @override
@@ -151,7 +151,7 @@ class _LoaderDialogState extends State<_LoaderDialog> {
 class LoaderController {
   Widget loader;
 
-  _LoaderDialog? _dialog;
+  LoaderDialog? _dialog;
 
   StreamController<String> _streamController = StreamController<String>();
   Completer _completer = Completer();
@@ -162,7 +162,7 @@ class LoaderController {
   void open(BuildContext context) {
     _completer = Completer();
     _streamController = StreamController<String>();
-    _dialog = _LoaderDialog(loader: loader, controller: _streamController);
+    _dialog = LoaderDialog(loader: loader, controller: _streamController);
     _dialog!.open(context);
   }
 

@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:appwrite/appwrite.dart';
 import 'package:flutter/widgets.dart';
-import 'package:test_app_write/locator.dart';
+import 'package:parcel_delivery/locator.dart';
 
 /// Bootstrap is responsible for any common setup and calls
 /// [runApp] with the widget returned by [builder] in an error zone.

@@ -1,14 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:test_app_write/app/data/api_client.dart';
-import 'package:test_app_write/app/presentation/loaders/app_loader.dart';
-import 'package:test_app_write/app/presentation/router/router.dart';
-import 'package:test_app_write/app/presentation/theme/app_colors.dart';
-import 'package:test_app_write/app/utils/collection_ids.dart';
-import 'package:test_app_write/auth/business_logic/login_cubit/login_cubit.dart';
-import 'package:test_app_write/chat/presentation/users_list.dart';
-import 'package:test_app_write/locator.dart';
+import 'package:parcel_delivery/app/data/api_client.dart';
+import 'package:parcel_delivery/app/presentation/home_page.dart';
+import 'package:parcel_delivery/app/presentation/loaders/app_loader.dart';
+import 'package:parcel_delivery/app/presentation/router/router.dart';
+import 'package:parcel_delivery/app/presentation/theme/app_colors.dart';
+import 'package:parcel_delivery/app/utils/collection_ids.dart';
+import 'package:parcel_delivery/auth/business_logic/login_cubit/login_cubit.dart';
+import 'package:parcel_delivery/locator.dart';
 import 'app/business_logic/cubit/application_cubit.dart';
 import 'auth/data/auth_service.dart';
 import 'auth/presentation/pages/login_page.dart';
@@ -44,7 +44,7 @@ class _ApplicationState extends State<Application> {
         builder: (context, state) {
           Widget homePage = Center(child: AppLoader.ballClipRotateMultiple());
           if (state.runtimeType == AuthenticationAuthenticated) {
-            homePage = const UsersList();
+            homePage = const HomePage();
           } else if (state.runtimeType == AuthenticationUnauthenticated) {
             homePage = BlocProvider(
               create: (context) =>

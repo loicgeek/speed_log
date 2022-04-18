@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:test_app_write/app/presentation/loaders/app_loader.dart';
-import 'package:test_app_write/app/presentation/router/router.dart';
-import 'package:test_app_write/app/presentation/theme/app_colors.dart';
-import 'package:test_app_write/app/presentation/widgets/widgets.dart';
-import 'package:test_app_write/auth/business_logic/login_cubit/login_cubit.dart';
+import 'package:parcel_delivery/app/presentation/loaders/app_loader.dart';
+import 'package:parcel_delivery/app/presentation/router/router.dart';
+import 'package:parcel_delivery/app/presentation/snackbars/snackbars.dart';
+import 'package:parcel_delivery/app/presentation/theme/app_colors.dart';
+import 'package:parcel_delivery/app/presentation/widgets/widgets.dart';
+import 'package:parcel_delivery/auth/business_logic/login_cubit/login_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -39,8 +40,12 @@ class _LoginPageState extends State<LoginPage> {
           if (state is LoginLoading) {
             _loader.open(context);
           } else if (state is LoginFailure) {
+            _loader.close().then((value) {
+              AppSnackbars.showError(context, message: state.message);
+            });
+          } else if (state is LoginSucess) {
             _loader.close().then((value) {});
-          } else if (state is LoginSucess) {}
+          }
         },
         builder: (context, state) {
           return SingleChildScrollView(
@@ -103,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                       label: "Mot de passe",
                       placeholder: "Entez votre mot de passe",
                       validator: (value) {
-                        return Validators.required("Password", value);
+                        return Validators.required("Mot de passe", value);
                       },
                       obscureText: true,
                       maxLines: 1,

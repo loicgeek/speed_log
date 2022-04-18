@@ -33,16 +33,16 @@ class AppInput extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 7.0),
-            child: Text(
-              label,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
-                color: AppColors.primaryGrayText,
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(vertical: 7.0),
+          //   child: Text(
+          //     label,
+          //     style: const TextStyle(
+          //       fontWeight: FontWeight.w400,
+          //       color: AppColors.primaryGrayText,
+          //     ),
+          //   ),
+          // ),
           TextFormField(
             readOnly: readOnly,
             controller: controller,
@@ -54,6 +54,16 @@ class AppInput extends StatelessWidget {
             maxLines: maxLines,
             decoration: InputDecoration(
               filled: true,
+              label: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 7.0),
+                child: Text(
+                  label,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.primaryGrayText,
+                  ),
+                ),
+              ),
               contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
               hintText: placeholder,
               hintStyle: const TextStyle(
