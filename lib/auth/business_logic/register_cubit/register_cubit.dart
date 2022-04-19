@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:parcel_delivery/app/utils/utils.dart';
-import 'package:parcel_delivery/auth/data/auth_service.dart';
+import 'package:speedest_logistics/app/utils/utils.dart';
+import 'package:speedest_logistics/auth/data/auth_service.dart';
 
 part 'register_state.dart';
 

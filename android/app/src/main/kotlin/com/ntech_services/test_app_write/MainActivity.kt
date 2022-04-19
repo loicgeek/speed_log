@@ -1,4 +1,4 @@
-package com.ntech_services.parcel_delivery
+package com.ntech_services.speedest_logistics
 
 import io.flutter.embedding.android.FlutterActivity
 

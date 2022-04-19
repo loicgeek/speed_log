@@ -1,6 +1,6 @@
 {
-  "name": "parcel_delivery",
-  "short_name": "parcel_delivery",
+  "name": "speedest_logistics",
+  "short_name": "speedest_logistics",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0175C2",

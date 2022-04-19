@@ -1,10 +1,10 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter/material.dart';
-import 'package:parcel_delivery/app/presentation/router/router.dart';
-import 'package:parcel_delivery/app/presentation/theme/theme.dart';
-import 'package:parcel_delivery/app/presentation/widgets/widgets.dart';
-import 'package:parcel_delivery/auth/data/auth_service.dart';
-import 'package:parcel_delivery/locator.dart';
+import 'package:speedest_logistics/app/presentation/router/router.dart';
+import 'package:speedest_logistics/app/presentation/theme/theme.dart';
+import 'package:speedest_logistics/app/presentation/widgets/widgets.dart';
+import 'package:speedest_logistics/auth/data/auth_service.dart';
+import 'package:speedest_logistics/locator.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -128,7 +128,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         setState(() {
                           isLoading = false;
                         });
-                        Navigator.of(context).pushNamed(RoutePath.usersList);
+                        Navigator.of(context).pushNamed(RoutePath.home);
                       } on AppwriteException catch (e) {
                         setState(() {
                           isLoading = false;

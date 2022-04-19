@@ -5,18 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "parcel_delivery",
+      "name": "speedest_logistics",
       "request": "launch",
       "type": "dart"
     },
     {
-      "name": "parcel_delivery (profile mode)",
+      "name": "speedest_logistics (profile mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile"
     },
     {
-      "name": "parcel_delivery (release mode)",
+      "name": "speedest_logistics (release mode)",
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"

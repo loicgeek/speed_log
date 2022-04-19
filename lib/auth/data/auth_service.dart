@@ -1,6 +1,6 @@
 import 'package:appwrite/models.dart';
-import 'package:parcel_delivery/app/data/api_client.dart';
-import 'package:parcel_delivery/app/utils/collection_ids.dart';
+import 'package:speedest_logistics/app/data/api_client.dart';
+import 'package:speedest_logistics/app/utils/collection_ids.dart';
 
 class AuthService {
   final ApiClient apiClient;

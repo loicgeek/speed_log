@@ -1,14 +1,14 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:parcel_delivery/app/data/api_client.dart';
-import 'package:parcel_delivery/app/presentation/home_page.dart';
-import 'package:parcel_delivery/app/presentation/loaders/app_loader.dart';
-import 'package:parcel_delivery/app/presentation/router/router.dart';
-import 'package:parcel_delivery/app/presentation/theme/app_colors.dart';
-import 'package:parcel_delivery/app/utils/collection_ids.dart';
-import 'package:parcel_delivery/auth/business_logic/login_cubit/login_cubit.dart';
-import 'package:parcel_delivery/locator.dart';
+import 'package:speedest_logistics/app/data/api_client.dart';
+import 'package:speedest_logistics/app/presentation/home_page.dart';
+import 'package:speedest_logistics/app/presentation/loaders/app_loader.dart';
+import 'package:speedest_logistics/app/presentation/router/router.dart';
+import 'package:speedest_logistics/app/presentation/theme/app_colors.dart';
+import 'package:speedest_logistics/app/utils/collection_ids.dart';
+import 'package:speedest_logistics/auth/business_logic/login_cubit/login_cubit.dart';
+import 'package:speedest_logistics/locator.dart';
 import 'app/business_logic/cubit/application_cubit.dart';
 import 'auth/data/auth_service.dart';
 import 'auth/presentation/pages/login_page.dart';
@@ -52,10 +52,12 @@ class _ApplicationState extends State<Application> {
               child: const LoginPage(),
             );
           }
+          homePage = const HomePage();
           return MaterialApp(
             debugShowCheckedModeBanner: false,
             onGenerateRoute: AppRouter.onGenerateRoute,
             theme: ThemeData(
+              fontFamily: "Comfortaa",
               primarySwatch: AppColors.createMaterialColor(AppColors.primary),
               appBarTheme: const AppBarTheme(
                 elevation: 0,

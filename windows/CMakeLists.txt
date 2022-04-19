@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(parcel_delivery LANGUAGES CXX)
+project(speedest_logistics LANGUAGES CXX)
 
-set(BINARY_NAME "parcel_delivery")
+set(BINARY_NAME "speedest_logistics")
 
 cmake_policy(SET CMP0063 NEW)
 

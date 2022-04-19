@@ -3,11 +3,11 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:parcel_delivery/app/presentation/loaders/app_loader.dart';
-import 'package:parcel_delivery/app/presentation/widgets/widgets.dart';
-import 'package:parcel_delivery/auth/business_logic/login_cubit/login_cubit.dart';
-import 'package:parcel_delivery/auth/data/auth_service.dart';
-import 'package:parcel_delivery/auth/presentation/pages/login_page.dart';
+import 'package:speedest_logistics/app/presentation/loaders/app_loader.dart';
+import 'package:speedest_logistics/app/presentation/widgets/widgets.dart';
+import 'package:speedest_logistics/auth/business_logic/login_cubit/login_cubit.dart';
+import 'package:speedest_logistics/auth/data/auth_service.dart';
+import 'package:speedest_logistics/auth/presentation/pages/login_page.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockAuthService extends Mock implements AuthService {}

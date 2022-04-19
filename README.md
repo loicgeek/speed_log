@@ -1,4 +1,4 @@
-# parcel_delivery
+# speedest_logistics
 
 A new Flutter project.
 

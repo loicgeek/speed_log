@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:parcel_delivery/app/presentation/loaders/app_loader.dart';
-import 'package:parcel_delivery/app/presentation/router/router.dart';
-import 'package:parcel_delivery/app/presentation/snackbars/snackbars.dart';
-import 'package:parcel_delivery/app/presentation/theme/app_colors.dart';
-import 'package:parcel_delivery/app/presentation/widgets/widgets.dart';
-import 'package:parcel_delivery/auth/business_logic/login_cubit/login_cubit.dart';
+import 'package:speedest_logistics/app/presentation/loaders/app_loader.dart';
+import 'package:speedest_logistics/app/presentation/router/router.dart';
+import 'package:speedest_logistics/app/presentation/snackbars/snackbars.dart';
+import 'package:speedest_logistics/app/presentation/theme/app_colors.dart';
+import 'package:speedest_logistics/app/presentation/widgets/widgets.dart';
+import 'package:speedest_logistics/auth/business_logic/login_cubit/login_cubit.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  LoaderController _loader = AppLoader.bounce();
+  final LoaderController _loader = AppLoader.bounce();
 
   @override
   void initState() {
@@ -62,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                     RichText(
                       textAlign: TextAlign.center,
                       text: const TextSpan(
-                        text: "Chat ",
+                        text: "Tchoko ",
                         style: TextStyle(
                           fontSize: 37,
                           fontWeight: FontWeight.w700,
@@ -71,7 +71,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         children: [
                           TextSpan(
-                            text: "To ",
+                            text: "Le  ",
                             style: TextStyle(
                               fontSize: 37,
                               fontWeight: FontWeight.w700,
@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           TextSpan(
-                            text: "\nWrite ",
+                            text: "\nWay ",
                             style: TextStyle(
                               color: AppColors.primary,
                               fontSize: 37,
