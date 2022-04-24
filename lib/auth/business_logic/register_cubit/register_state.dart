@@ -7,7 +7,11 @@ class RegisterPending extends RegisterState {}
 
 class RegisterLoading extends RegisterState {}
 
-class RegisterSucess extends RegisterState {}
+class RegisterSucess extends RegisterState {
+  final UserModel user;
+
+  RegisterSucess(this.user);
+}
 
 class RegisterFailure extends RegisterState {
   final String message;

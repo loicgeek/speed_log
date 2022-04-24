@@ -1,26 +1,35 @@
 import 'package:appwrite/models.dart';
 import 'package:speedest_logistics/app/data/api_client.dart';
 import 'package:speedest_logistics/app/utils/collection_ids.dart';
+import 'package:speedest_logistics/auth/data/models/user_model.dart';
 
 class AuthService {
   final ApiClient apiClient;
 
   AuthService({required this.apiClient});
-  Future<Session> login({
+  Future<UserModel> login({
     required String email,
     required String password,
-  }) {
-    return apiClient.account.createSession(email: email, password: password);
+  }) async {
+    await apiClient.account.createSession(email: email, password: password);
+    return getCurrentUser();
   }
 
-  Future<User> getCurrentUser() {
-    return apiClient.account.get();
+  Future<UserModel> getCurrentUser() async {
+    var u = await apiClient.account.get();
+    var d = await apiClient.database.getDocument(
+      collectionId: CollectionIds.users,
+      documentId: u.$id,
+    );
+
+    return UserModel.fromJson(d.data);
   }
 
-  Future<User> register({
+  Future<UserModel> register({
     required String email,
     required String password,
-    String? name,
+    required String name,
+    required String phone,
   }) async {
     var user = await apiClient.account.create(
       email: email,
@@ -28,17 +37,31 @@ class AuthService {
       userId: "unique()",
       name: name,
     );
-    await apiClient.database.createDocument(
-        collectionId: CollectionIds.users,
-        documentId: user.$id,
-        data: {
-          "email": email,
-          "name": name,
-        });
-    return user;
+
+    await apiClient.account.createSession(email: email, password: password);
+
+    var d = await apiClient.database.createDocument(
+      collectionId: CollectionIds.users,
+      documentId: user.$id,
+      data: {
+        "email": email,
+        "name": name,
+        "phone": phone,
+      },
+      read: ["role:all"],
+      write: ["user:${user.$id}"],
+    );
+    return UserModel.fromJson(d.data);
   }
 
-  Future logout() async {
-    User user = await apiClient.account.get();
+  Future<bool> logout() async {
+    SessionList sessions = await apiClient.account.getSessions();
+    for (var item in sessions.sessions) {
+      if (item.current) {
+        apiClient.account.deleteSession(sessionId: item.$id);
+        break;
+      }
+    }
+    return true;
   }
 }

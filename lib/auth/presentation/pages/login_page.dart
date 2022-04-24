@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedest_logistics/app/business_logic/cubit/application_cubit.dart';
 import 'package:speedest_logistics/app/presentation/loaders/app_loader.dart';
 import 'package:speedest_logistics/app/presentation/router/router.dart';
 import 'package:speedest_logistics/app/presentation/snackbars/snackbars.dart';
@@ -44,7 +45,11 @@ class _LoginPageState extends State<LoginPage> {
               AppSnackbars.showError(context, message: state.message);
             });
           } else if (state is LoginSucess) {
-            _loader.close().then((value) {});
+            _loader.close().then((value) {
+              context
+                  .read<ApplicationCubit>()
+                  .yieldAuthenticatedUser(state.user);
+            });
           }
         },
         builder: (context, state) {
@@ -59,38 +64,9 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: screenHeight * .03,
                     ),
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: const TextSpan(
-                        text: "Tchoko ",
-                        style: TextStyle(
-                          fontSize: 37,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: .2,
-                          color: Colors.black,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Le  ",
-                            style: TextStyle(
-                              fontSize: 37,
-                              fontWeight: FontWeight.w700,
-                              height: 1,
-                              letterSpacing: .2,
-                              color: Colors.black,
-                            ),
-                          ),
-                          TextSpan(
-                            text: "\nWay ",
-                            style: TextStyle(
-                              color: AppColors.primary,
-                              fontSize: 37,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: .2,
-                            ),
-                          ),
-                        ],
-                      ),
+                    Image.asset(
+                      "assets/images/speed_log_ver.png",
+                      height: 150,
                     ),
                     SizedBox(
                       height: screenHeight * .03,
@@ -102,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) {
                         return Validators.required("Email", value);
                       },
+                      textInputType: TextInputType.emailAddress,
                     ),
                     AppInput(
                       controller: _passwordController,
@@ -110,12 +87,21 @@ class _LoginPageState extends State<LoginPage> {
                       validator: (value) {
                         return Validators.required("Mot de passe", value);
                       },
-                      obscureText: true,
                       maxLines: 1,
+                      textInputType: TextInputType.visiblePassword,
                     ),
                     SizedBox(
                       height: screenHeight * .05,
                     ),
+                    if (state is LoginFailure) ...[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          state.message,
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ],
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

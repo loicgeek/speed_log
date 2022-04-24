@@ -7,7 +7,11 @@ class LoginPending extends LoginState {}
 
 class LoginLoading extends LoginState {}
 
-class LoginSucess extends LoginState {}
+class LoginSucess extends LoginState {
+  final UserModel user;
+
+  LoginSucess(this.user);
+}
 
 class LoginFailure extends LoginState {
   final String message;

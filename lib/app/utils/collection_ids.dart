@@ -4,4 +4,5 @@ class CollectionIds {
   static const String cities = "625d79718a59a108d674";
   static const String quarters = "625d7a03ed413c3501a7";
   static const String deliveries = "625d8378c915b33cf608";
+  static const String offers = "6264e5ccd6f5173a1aac";
 }
