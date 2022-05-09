@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_font_icons/flutter_font_icons.dart';
@@ -5,9 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:speedest_logistics/app/business_logic/cubit/application_cubit.dart';
 import 'package:speedest_logistics/app/presentation/loaders/app_loader.dart';
 import 'package:speedest_logistics/app/presentation/router/route_path.dart';
+import 'package:speedest_logistics/app/presentation/router/router.dart';
 import 'package:speedest_logistics/app/presentation/theme/app_colors.dart';
 import 'package:speedest_logistics/app/presentation/widgets/widgets.dart';
 import 'package:speedest_logistics/auth/data/models/user_model.dart';
+import 'package:speedest_logistics/parcels/presentation/track_parcel_map.dart';
 import 'package:speedest_logistics/profile/business_logic/profile_cubit/profile_cubit.dart';
 
 import '../business_logic/parcel_details/parcel_details_cubit.dart';
@@ -55,12 +59,21 @@ class _ParcelDetailsScreenState extends State<ParcelDetailsScreen> {
               child: AppButton(
                 text: "send",
                 onTap: () {
-                  context.read<ParcelDetailsCubit>().sendOffer(
+                  context
+                      .read<ParcelDetailsCubit>()
+                      .sendOffer(
                         amount: int.parse(_offerController.text),
                         username: user.name,
                         userId: user.id,
                         phone: user.phone,
-                      );
+                      )
+                      .then((value) {
+                    if (value != null) {
+                      context
+                          .read<ParcelDetailsCubit>()
+                          .sendOfferNotification(value);
+                    }
+                  });
                 },
               ),
             ),
@@ -107,7 +120,8 @@ class _ParcelDetailsScreenState extends State<ParcelDetailsScreen> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          if (state.parcel!.status == "waiting")
+                          if (state.parcel!.status == "waiting" &&
+                              state.parcel!.senderId == user.id)
                             Expanded(
                               child: InkWell(
                                 onTap: () {
@@ -158,7 +172,34 @@ class _ParcelDetailsScreenState extends State<ParcelDetailsScreen> {
         // TODO: implement listener
       },
       builder: (context, state) {
-        if (state is LoadParcelDetailsLoading) {
+        print(state.parcel);
+        if (state.parcel != null) {
+          return DefaultTabController(
+            length: 2,
+            child: Scaffold(
+                appBar: AppBar(
+                  title: Text(state.parcel!.title),
+                  bottom: const TabBar(tabs: [
+                    Tab(
+                      text: "Details",
+                    ),
+                    Tab(
+                      text: "Offers",
+                    ),
+                  ]),
+                ),
+                body: TabBarView(
+                  children: [
+                    PackageDeliveryTrackingPage(),
+                    _buildOffersList(),
+                  ],
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerFloat,
+                floatingActionButton: _buildFAB(state)),
+          );
+        }
+        if (state is LoadParcelDetailsLoading && state.parcel == null) {
           return Scaffold(
               appBar: AppBar(
                 title: Text('Loading ...'),
@@ -186,42 +227,59 @@ class _ParcelDetailsScreenState extends State<ParcelDetailsScreen> {
           );
         }
 
-        return DefaultTabController(
-          length: 2,
-          child: Scaffold(
-            appBar: AppBar(
-              title: Text(state.parcel!.title),
-              bottom: TabBar(tabs: [
-                Tab(
-                  text: "Details",
-                ),
-                Tab(
-                  text: "Offers",
-                ),
-              ]),
-            ),
-            body: TabBarView(
-              children: [
-                PackageDeliveryTrackingPage(),
-                _buildOffersList(),
-              ],
-            ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-            floatingActionButton: state.parcel!.senderId == user.id
-                ? FloatingActionButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(
-                          RoutePath.showParcelQrCodeScreen,
-                          arguments: {"id": state.parcel!.id});
-                    },
-                    tooltip: 'QrCode',
-                    child: const Icon(MaterialCommunityIcons.barcode),
-                  )
-                : null,
-          ),
-        );
+        return Container();
       },
+    );
+  }
+
+  Widget? _buildFAB(ParcelDetailsState state) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        if (state.parcel!.status == "started")
+          FloatingActionButton(
+            key: const ValueKey("track parcel"),
+            onPressed: () {
+              Navigator.of(context).push(
+                AppRouter.createRoute(
+                  TrackParcelMap(
+                    parcelId: state.parcel!.id,
+                  ),
+                ),
+              );
+            },
+            tooltip: 'QrCode',
+            child: const Icon(MaterialCommunityIcons.map),
+          ),
+        if (state.parcel!.senderId == user.id)
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(RoutePath.showParcelQrCodeScreen,
+                  arguments: {"id": state.parcel!.id});
+            },
+            tooltip: 'QrCode',
+            child: const Icon(MaterialCommunityIcons.barcode),
+          ),
+        if (state.parcel!.deliveryManId == user.id)
+          if (state.parcel!.status == 'started')
+            FloatingActionButton.extended(
+              label: const Text("Started"),
+              onPressed: () async {},
+              tooltip: 'Start ',
+              icon: const Icon(MaterialCommunityIcons.car),
+            )
+          else
+            FloatingActionButton.extended(
+              label: const Text("Start"),
+              onPressed: () async {
+                await context
+                    .read<ParcelDetailsCubit>()
+                    .startDelivery(state.parcel!.id);
+              },
+              tooltip: 'Start ',
+              icon: const Icon(MaterialCommunityIcons.car),
+            )
+      ],
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:speedest_logistics/app/data/api_client.dart';
@@ -57,7 +58,9 @@ class _ApplicationState extends State<Application> {
 
           if (state is AuthenticationAuthenticated) {
             homePage = const HomePage();
-            context.read<ProfileCubit>().yieldUser(state.user!);
+            context.read<ProfileCubit>()
+              ..yieldUser(state.user!)
+              ..updateToken();
           } else if (state is AuthenticationUnauthenticated) {
             homePage = BlocProvider(
               create: (context) =>

@@ -7,7 +7,10 @@
     {
       "name": "speedest_logistics",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "args": [
+        "-v"
+      ]
     },
     {
       "name": "speedest_logistics (profile mode)",

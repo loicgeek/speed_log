@@ -4,14 +4,16 @@ import 'package:intl/intl.dart';
 import 'package:speedest_logistics/app/presentation/theme/app_colors.dart';
 import 'package:speedest_logistics/parcels/business_logic/parcel_details/parcel_details_cubit.dart';
 import 'package:speedest_logistics/parcels/data/models/parcel.dart';
+import 'package:speedest_logistics/profile/business_logic/profile_cubit/profile_cubit.dart';
 import 'package:timelines/timelines.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const kTileHeight = 50.0;
 
 class PackageDeliveryTrackingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final data = _data(1);
+    var user = context.read<ProfileCubit>().state.user!;
 
     return BlocBuilder<ParcelDetailsCubit, ParcelDetailsState>(
       builder: (context, state) {
@@ -133,11 +135,7 @@ class PackageDeliveryTrackingPage extends StatelessWidget {
                     children: [
                       MaterialButton(
                         onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('On-time!'),
-                            ),
-                          );
+                          launchUrl(Uri.parse("tel:${p.deliveryManPhone}"));
                         },
                         elevation: 0,
                         shape: StadiumBorder(),
@@ -161,170 +159,41 @@ class PackageDeliveryTrackingPage extends StatelessWidget {
                     ],
                   ),
                 ),
+              if (p.deliveryManId == user.id)
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Row(
+                    children: [
+                      MaterialButton(
+                        onPressed: () {
+                          launchUrl(Uri.parse("tel:${p.receiverPhone}"));
+                        },
+                        elevation: 0,
+                        shape: StadiumBorder(),
+                        color: Color(0xff66c97f),
+                        textColor: Colors.white,
+                        child: Text('Call'),
+                      ),
+                      Spacer(),
+                      Text(
+                        'Receiver \n${p.receiverName}',
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(width: 12.0),
+                      Container(
+                        width: 40.0,
+                        height: 40.0,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
             ],
           ),
         );
       },
     );
-  }
-}
-
-class _OrderTitle extends StatelessWidget {
-  const _OrderTitle({
-    Key? key,
-    required this.orderInfo,
-  }) : super(key: key);
-
-  final _OrderInfo orderInfo;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          'Delivery #${orderInfo.id}',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Spacer(),
-        Text(
-          '${orderInfo.date.day}/${orderInfo.date.month}/${orderInfo.date.year}',
-          style: TextStyle(
-            color: Color(0xffb6b2b2),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _InnerTimeline extends StatelessWidget {
-  const _InnerTimeline({
-    required this.messages,
-  });
-
-  final List<_DeliveryMessage> messages;
-
-  @override
-  Widget build(BuildContext context) {
-    bool isEdgeIndex(int index) {
-      return index == 0 || index == messages.length + 1;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: FixedTimeline.tileBuilder(
-        theme: TimelineTheme.of(context).copyWith(
-          nodePosition: 0,
-          connectorTheme: TimelineTheme.of(context).connectorTheme.copyWith(
-                thickness: 1.0,
-              ),
-          indicatorTheme: TimelineTheme.of(context).indicatorTheme.copyWith(
-                size: 10.0,
-                position: 0.5,
-              ),
-        ),
-        builder: TimelineTileBuilder(
-          indicatorBuilder: (_, index) =>
-              !isEdgeIndex(index) ? Indicator.outlined(borderWidth: 1.0) : null,
-          startConnectorBuilder: (_, index) => Connector.solidLine(),
-          endConnectorBuilder: (_, index) => Connector.solidLine(),
-          contentsBuilder: (_, index) {
-            if (isEdgeIndex(index)) {
-              return null;
-            }
-
-            return Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: Text(messages[index - 1].toString()),
-            );
-          },
-          itemExtentBuilder: (_, index) => isEdgeIndex(index) ? 10.0 : 30.0,
-          nodeItemOverlapBuilder: (_, index) =>
-              isEdgeIndex(index) ? true : null,
-          itemCount: messages.length + 2,
-        ),
-      ),
-    );
-  }
-}
-
-_OrderInfo _data(int id) => _OrderInfo(
-      id: id,
-      date: DateTime.now(),
-      driverInfo: _DriverInfo(
-        name: 'Philipe',
-        thumbnailUrl:
-            'https://i.pinimg.com/originals/08/45/81/084581e3155d339376bf1d0e17979dc6.jpg',
-      ),
-      deliveryProcesses: [
-        _DeliveryProcess(
-          'Package Process',
-          messages: [
-            _DeliveryMessage('8:30am', 'Package received by driver'),
-            _DeliveryMessage('11:30am', 'Reached halfway mark'),
-          ],
-        ),
-        _DeliveryProcess(
-          'In Transit',
-          messages: [
-            _DeliveryMessage('13:00pm', 'Driver arrived at destination'),
-            _DeliveryMessage('11:35am', 'Package delivered by m.vassiliades'),
-          ],
-        ),
-        _DeliveryProcess.complete(),
-      ],
-    );
-
-class _OrderInfo {
-  const _OrderInfo({
-    required this.id,
-    required this.date,
-    required this.driverInfo,
-    required this.deliveryProcesses,
-  });
-
-  final int id;
-  final DateTime date;
-  final _DriverInfo driverInfo;
-  final List<_DeliveryProcess> deliveryProcesses;
-}
-
-class _DriverInfo {
-  const _DriverInfo({
-    required this.name,
-    required this.thumbnailUrl,
-  });
-
-  final String name;
-  final String thumbnailUrl;
-}
-
-class _DeliveryProcess {
-  const _DeliveryProcess(
-    this.name, {
-    this.messages = const [],
-  });
-
-  const _DeliveryProcess.complete()
-      : this.name = 'Done',
-        this.messages = const [];
-
-  final String name;
-  final List<_DeliveryMessage> messages;
-
-  bool get isCompleted => name == 'Done';
-}
-
-class _DeliveryMessage {
-  const _DeliveryMessage(this.createdAt, this.message);
-
-  final String createdAt; // final DateTime createdAt;
-  final String message;
-
-  @override
-  String toString() {
-    return '$createdAt $message';
   }
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:appwrite/models.dart';
 import 'package:bloc/bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:meta/meta.dart';
 import 'package:speedest_logistics/auth/data/auth_service.dart';
 import 'package:speedest_logistics/auth/data/models/user_model.dart';
@@ -18,7 +19,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
       emit(AuthenticationLoading());
       var user = await authService.getCurrentUser();
       if (user.email.isNotEmpty) {
-        emit(AuthenticationAuthenticated(user));
+        yieldAuthenticatedUser(user);
       } else {
         emit(AuthenticationUnauthenticated());
       }
@@ -29,6 +30,9 @@ class ApplicationCubit extends Cubit<ApplicationState> {
   }
 
   yieldAuthenticatedUser(UserModel user) {
+    GetStorage().write("user_id", user.id).then((value) {
+      print("User id saved");
+    });
     emit(AuthenticationAuthenticated(user));
   }
 

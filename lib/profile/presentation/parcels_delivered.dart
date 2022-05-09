@@ -11,14 +11,14 @@ import 'package:speedest_logistics/parcels/data/models/parcel.dart';
 import 'package:speedest_logistics/parcels/data/repositories/delivery_repository.dart';
 import 'package:speedest_logistics/profile/business_logic/profile_cubit/profile_cubit.dart';
 
-class ParcelsSentScreen extends StatefulWidget {
-  const ParcelsSentScreen({Key? key}) : super(key: key);
+class ParcelsDeliveredScreen extends StatefulWidget {
+  const ParcelsDeliveredScreen({Key? key}) : super(key: key);
 
   @override
-  State<ParcelsSentScreen> createState() => _ParcelsSentScreenState();
+  State<ParcelsDeliveredScreen> createState() => _ParcelsDeliveredScreenState();
 }
 
-class _ParcelsSentScreenState extends State<ParcelsSentScreen> {
+class _ParcelsDeliveredScreenState extends State<ParcelsDeliveredScreen> {
   late DeliveryRepository _deliveryRepository;
   late UserModel user;
   late Future<List<Parcel>> future;
@@ -26,7 +26,7 @@ class _ParcelsSentScreenState extends State<ParcelsSentScreen> {
   void initState() {
     _deliveryRepository = locator.get<DeliveryRepository>();
     user = context.read<ProfileCubit>().state.user!;
-    future = _deliveryRepository.find(senderId: user.id);
+    future = _deliveryRepository.find(deliveryManId: user.id);
     super.initState();
   }
 
@@ -34,7 +34,7 @@ class _ParcelsSentScreenState extends State<ParcelsSentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Parcels Sent"),
+        title: const Text("Parcels Delivered"),
       ),
       body: FutureBuilder<List<Parcel>>(
         future: future,

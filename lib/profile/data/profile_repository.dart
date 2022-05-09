@@ -16,6 +16,7 @@ class ProfileRepository {
     double? long,
     bool? online,
     String? phone,
+    String? token,
   }) async {
     Map<String, dynamic> data = {};
     if (isDriver != null) {
@@ -23,6 +24,9 @@ class ProfileRepository {
     }
     if (availability != null) {
       data["is_available"] = availability;
+    }
+    if (token != null) {
+      data["token"] = token;
     }
     if (lat != null) {
       data["latitude"] = lat;
@@ -46,5 +50,14 @@ class ProfileRepository {
       data: data,
     );
     return UserModel.fromJson(doc.data);
+  }
+
+  Future<UserModel> getUser(String userId) async {
+    var d = await apiClient.database.getDocument(
+      collectionId: CollectionIds.users,
+      documentId: userId,
+    );
+
+    return UserModel.fromJson(d.data);
   }
 }

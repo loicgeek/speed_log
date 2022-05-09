@@ -4,6 +4,8 @@ class RoutePath {
   static const String register = "register";
   static const String sendParcel = "sendParcel";
   static const String parcelsSent = "parcelsSent";
+  static const String parcelsDelivered = "parcelsDelivered";
+  static const String parcelsStarted = "parcelsStarted";
   static const String parcelDetails = "parcelDetails";
   static const String editProfile = "editProfile";
   static const String scanParcelQrCodeScreen = "scanParcelQrCodeScreen";

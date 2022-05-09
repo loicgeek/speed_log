@@ -22,98 +22,196 @@ class _SendingParcelsScreenState extends State<SendingParcelsScreen> {
   late DeliveryRepository _deliveryRepository;
   late UserModel user;
   late Future<List<Parcel>> future;
+  late Future<List<Parcel>> myParcelsfuture;
   @override
   void initState() {
     _deliveryRepository = locator.get<DeliveryRepository>();
     user = context.read<ProfileCubit>().state.user!;
 
     setFuture();
+    setMyParcelsFuture();
     super.initState();
   }
 
   setFuture() {
-    future = _deliveryRepository.find(senderId: user.id, status: "waiting");
+    future =
+        _deliveryRepository.find(notSenderId: user.id, status: ["waiting"]);
+  }
+
+  setMyParcelsFuture() {
+    myParcelsfuture = _deliveryRepository
+        .find(senderId: user.id, status: ["waiting", "started", 'ongoing']);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("My Sendings"),
-        centerTitle: true,
-      ),
-      body: FutureBuilder<List<Parcel>>(
-        future: future,
-        builder: (BuildContext context, AsyncSnapshot<List<Parcel>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: AppLoader.ballClipRotateMultiple());
-          }
-          if (snapshot.hasError) {
-            return Center(child: Text(snapshot.error.toString()));
-          }
-          if (snapshot.hasData) {
-            return RefreshIndicator(
-              onRefresh: () {
-                setFuture();
-                setState(() {});
-                return future;
-              },
-              child: ListView.builder(
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  Parcel p = snapshot.data![index];
-                  return Card(
-                    child: ListTile(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(
-                          RoutePath.parcelDetails,
-                          arguments: {"id": p.id},
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Parcels "),
+          centerTitle: true,
+          bottom: const TabBar(tabs: [
+            Tab(
+              text: "Waiting",
+            ),
+            Tab(
+              text: "My Parcels",
+            ),
+          ]),
+        ),
+        body: TabBarView(
+          children: [
+            FutureBuilder<List<Parcel>>(
+              future: future,
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Parcel>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: AppLoader.ballClipRotateMultiple());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text(snapshot.error.toString()));
+                }
+                if (snapshot.hasData) {
+                  return RefreshIndicator(
+                    onRefresh: () {
+                      setFuture();
+                      setState(() {});
+                      return future;
+                    },
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        Parcel p = snapshot.data![index];
+                        return Card(
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                RoutePath.parcelDetails,
+                                arguments: {"id": p.id},
+                              );
+                            },
+                            trailing: Column(
+                              children: [
+                                Text("${p.weight} kg"),
+                                Expanded(
+                                  child: Chip(
+                                    label: Text(
+                                      p.status,
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.zero,
+                                    labelPadding: const EdgeInsets.symmetric(
+                                      vertical: 0,
+                                      horizontal: 10,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            title: Row(
+                              children: [
+                                Expanded(child: Text(p.title)),
+                              ],
+                            ),
+                            isThreeLine: true,
+                            subtitle: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("${p.fromName} - ${p.toName}"),
+                                Text(DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY)
+                                    .format(p.createdAt))
+                              ],
+                            ),
+                          ),
                         );
                       },
-                      trailing: Column(
-                        children: [
-                          Text("${p.weight} kg"),
-                          Expanded(
-                            child: Chip(
-                              label: Text(
-                                p.status,
-                                style: const TextStyle(
-                                  fontSize: 11,
-                                ),
-                              ),
-                              padding: EdgeInsets.zero,
-                              labelPadding: const EdgeInsets.symmetric(
-                                vertical: 0,
-                                horizontal: 10,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                      title: Row(
-                        children: [
-                          Expanded(child: Text(p.title)),
-                        ],
-                      ),
-                      isThreeLine: true,
-                      subtitle: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text("${p.fromName} - ${p.toName}"),
-                          Text(DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY)
-                              .format(p.createdAt))
-                        ],
-                      ),
                     ),
                   );
-                },
-              ),
-            );
-          }
-          return Container();
-        },
+                }
+                return Container();
+              },
+            ),
+            FutureBuilder<List<Parcel>>(
+              future: myParcelsfuture,
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Parcel>> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: AppLoader.ballClipRotateMultiple());
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text(snapshot.error.toString()));
+                }
+                if (snapshot.hasData) {
+                  return RefreshIndicator(
+                    onRefresh: () {
+                      setMyParcelsFuture();
+                      setState(() {});
+                      return future;
+                    },
+                    child: ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        Parcel p = snapshot.data![index];
+                        return Card(
+                          child: ListTile(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                RoutePath.parcelDetails,
+                                arguments: {"id": p.id},
+                              );
+                            },
+                            trailing: Column(
+                              children: [
+                                Text("${p.weight} kg"),
+                                Expanded(
+                                  child: Chip(
+                                    label: Text(
+                                      p.status,
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.zero,
+                                    labelPadding: const EdgeInsets.symmetric(
+                                      vertical: 0,
+                                      horizontal: 10,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            title: Row(
+                              children: [
+                                Expanded(child: Text(p.title)),
+                              ],
+                            ),
+                            isThreeLine: true,
+                            subtitle: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("${p.fromName} - ${p.toName}"),
+                                Text(DateFormat(DateFormat.YEAR_ABBR_MONTH_DAY)
+                                    .format(p.createdAt))
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                }
+                return Container();
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

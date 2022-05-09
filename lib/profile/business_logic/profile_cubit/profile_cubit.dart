@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:meta/meta.dart';
 import 'package:speedest_logistics/app/utils/helpers.dart';
 import 'package:speedest_logistics/auth/data/models/user_model.dart';
@@ -15,6 +16,10 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   updateAvailabity() {}
+  updateToken() async {
+    var token = await FirebaseMessaging.instance.getToken();
+    updateInfos(token: token);
+  }
 
   updateInfos({
     String? name,
@@ -22,6 +27,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     bool? isAvailable,
     bool? isDriver,
     bool? online,
+    String? token,
   }) async {
     try {
       emit(UpdateProfileLoading(state.user!));
@@ -30,6 +36,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         name: name,
         availability: isAvailable,
         online: online,
+        token: token,
       );
       emit(UpdateProfileSuccess(user));
     } catch (e) {

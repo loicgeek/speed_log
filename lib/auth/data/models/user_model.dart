@@ -9,6 +9,9 @@ class UserModel {
   late String name;
   late String email;
   late String phone;
+  double? latitude;
+  double? longitude;
+  String? token;
 
   @JsonKey(name: "is_driver")
   late bool isDriver;
@@ -22,6 +25,9 @@ class UserModel {
     required this.phone,
     this.isDriver = false,
     this.isAvailable = false,
+    this.latitude,
+    this.longitude,
+    this.token,
   });
 
   /// Connect the generated [_$UserModelFromJson] function to the `fromJson`

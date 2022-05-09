@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:speedest_logistics/app/data/notification_client.dart';
 import 'package:speedest_logistics/app/presentation/home_page.dart';
 import 'package:speedest_logistics/auth/business_logic/login_cubit/login_cubit.dart';
 import 'package:speedest_logistics/auth/business_logic/register_cubit/register_cubit.dart';
@@ -18,7 +19,9 @@ import 'package:speedest_logistics/parcels/presentation/parcel_details_screen.da
 import 'package:speedest_logistics/parcels/presentation/scan_parcel_qrcode_screen.dart';
 import 'package:speedest_logistics/parcels/presentation/send_parcel_screen.dart';
 import 'package:speedest_logistics/parcels/presentation/show_parcel_qrcode_screen.dart';
+import 'package:speedest_logistics/profile/data/profile_repository.dart';
 import 'package:speedest_logistics/profile/presentation/edit_profile_screen.dart';
+import 'package:speedest_logistics/profile/presentation/parcels_delivered.dart';
 import 'package:speedest_logistics/profile/presentation/parcels_sent_screen.dart';
 import './route_path.dart';
 
@@ -89,6 +92,8 @@ class AppRouter {
         return createRoute(const EditProfileScreen());
       case RoutePath.parcelsSent:
         return createRoute(const ParcelsSentScreen());
+      case RoutePath.parcelsDelivered:
+        return createRoute(const ParcelsDeliveredScreen());
       case RoutePath.parcelDetails:
         Map<String, dynamic> arguments =
             settings.arguments as Map<String, dynamic>;
@@ -97,8 +102,11 @@ class AppRouter {
         return createRoute(
           BlocProvider(
             create: (context) => ParcelDetailsCubit(
-                repository: locator.get<DeliveryRepository>(), parcelId: id)
-              ..loadDetails(),
+              repository: locator.get<DeliveryRepository>(),
+              profileRepository: locator.get<ProfileRepository>(),
+              notificationClient: locator.get<NotificationClient>(),
+              parcelId: id,
+            )..loadDetails(),
             child: const ParcelDetailsScreen(),
           ),
         );
@@ -111,7 +119,11 @@ class AppRouter {
         return createRoute(
           BlocProvider(
             create: (context) => ParcelDetailsCubit(
-                repository: locator.get<DeliveryRepository>(), parcelId: id),
+              repository: locator.get<DeliveryRepository>(),
+              parcelId: id,
+              profileRepository: locator.get<ProfileRepository>(),
+              notificationClient: locator.get<NotificationClient>(),
+            ),
             child: ShowParcelQrCodeScreen(id: id),
           ),
         );

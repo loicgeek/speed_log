@@ -26,6 +26,20 @@ dependencies:
   qr_flutter: ^4.0.0
   screenshot: ^1.2.3
   esys_flutter_share_plus: ^2.1.0
+  flutter_local_notifications: ^9.4.1
+  flutter_ringtone_player: ^3.2.0
+  flutter_osm_plugin: ^0.33.0+2
+  flutter_map: ^0.14.0
+  flutter_map_marker_cluster: ^0.4.4
+  equatable: ^2.0.3
+  background_locator:
+    git:
+      url: https://github.com/caiobraga/background_locator.git
+  get_storage: ^2.0.3
+  location_permissions: ^4.0.1
+  path_provider_android: ^2.0.12
+  path_provider_ios: ^2.0.8
+  url_launcher: ^6.1.0
 
 dev_dependencies:
   flutter_test:

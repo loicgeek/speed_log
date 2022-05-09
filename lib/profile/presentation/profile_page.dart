@@ -75,6 +75,20 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Card(
                 child: ListTile(
+                  onTap: () {
+                    Navigator.of(context).pushNamed(RoutePath.parcelsDelivered);
+                  },
+                  title: const Text("Parcels Delivered"),
+                  trailing: Transform.rotate(
+                    angle: -pi / 4,
+                    child: const Icon(
+                      Icons.send,
+                    ),
+                  ),
+                ),
+              ),
+              Card(
+                child: ListTile(
                   onTap: () async {
                     await context.read<ApplicationCubit>().logout();
                   },

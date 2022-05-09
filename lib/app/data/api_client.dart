@@ -16,6 +16,7 @@ class ApiClient {
   Database get database => Database(_instance._client);
   Storage get storage => Storage(_instance._client);
   Realtime get realtime => Realtime(_instance._client);
+  Functions get functions => Functions(_instance._client);
 
   static final ApiClient _instance = ApiClient._internal();
   ApiClient._internal();

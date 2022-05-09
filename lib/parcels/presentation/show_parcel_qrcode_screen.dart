@@ -57,10 +57,13 @@ class _ShowParcelQrCodeScreenState extends State<ShowParcelQrCodeScreen> {
             ),
             Screenshot(
               controller: screenshotController,
-              child: QrImage(
-                data: widget.id,
-                version: QrVersions.auto,
-                size: MediaQuery.of(context).size.width * .7,
+              child: Container(
+                color: Colors.white,
+                child: QrImage(
+                  data: widget.id,
+                  version: QrVersions.auto,
+                  size: MediaQuery.of(context).size.width * .7,
+                ),
               ),
             ),
           ],
@@ -70,13 +73,13 @@ class _ShowParcelQrCodeScreenState extends State<ShowParcelQrCodeScreen> {
         onPressed: () async {
           screenshotController.capture().then((Uint8List? image) async {
             await Share.file(
-                'share Parcel Coled', '${widget.id}.jpg', image!, 'image/jpg');
+                'share Parcel Code', '${widget.id}.jpg', image!, 'image/jpg');
             //Capture Done
           }).catchError((error) {
             print(error);
           });
         },
-        label: Text("Share"),
+        label: const Text("Share"),
         icon: const Icon(
           FontAwesome.share,
         ),

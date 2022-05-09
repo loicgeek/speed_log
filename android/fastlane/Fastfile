@@ -1,0 +1,41 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+platform :android do
+
+  desc "Fetch Commits information"
+  before_all do |lane|
+    changelog_from_git_commits(
+      commits_count: 3,  # Optional, lets you specify a revision/tag range between which to collect commit info
+      pretty: "-%a %s",# Optional, lets you provide a custom format to apply to each commit when generating the changelog text
+      date_format: "short",# Optional, lets you provide an additional date format to dates within the pretty-formatted string
+      match_lightweight_tag: false,  # Optional, lets you ignore lightweight (non-annotated) tags when searching for the last tag
+      merge_commit_filtering: "exclude_merges" # Optional, lets you filter out merge commits
+    )
+  end
+
+  desc "Build dev apk and distribute to firebase"
+  lane :dev do
+    Dir.chdir "../.." do sh("flutter", "build", "apk","-t","./lib/main.dart","--release","-v") end # Call Flutter Build
+      firebase_app_distribution(
+        app: "1:785076994198:android:a07d644c7efea2fa0802b7",
+        testers: "loic.ngou98@gmail.com,",
+        release_notes: lane_context[SharedValues::FL_CHANGELOG],
+        android_artifact_type: "APK",
+        android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk"
+    )
+  end
+end

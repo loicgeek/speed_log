@@ -1,12 +1,17 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:speedest_logistics/app/data/api_client.dart';
+import 'package:speedest_logistics/app/data/notification_client.dart';
 import 'package:speedest_logistics/app/utils/collection_ids.dart';
 import 'package:speedest_logistics/parcels/data/models/offer.dart';
 import 'package:speedest_logistics/parcels/data/models/parcel.dart';
 
 class DeliveryRepository {
   ApiClient apiClient;
-  DeliveryRepository({required this.apiClient});
+  NotificationClient notificationClient;
+  DeliveryRepository({
+    required this.apiClient,
+    required this.notificationClient,
+  });
 
   Future<Parcel> sendParcel({
     required String title,
@@ -54,7 +59,21 @@ class DeliveryRepository {
       write: ["role:all"],
     );
 
-    return Parcel.fromJson(doc.data);
+    var parcel = Parcel.fromJson(doc.data);
+
+    String notifTitle = "New parcel in $cityName";
+    String notifBody = "$title\n$fromName - $toName\nWeight: ${weight}Kg";
+    notificationClient.send(
+      title: notifTitle,
+      body: notifBody,
+      data: {
+        "parcel_id": parcel.id,
+        "type": "new-parcel",
+      },
+      topic: "/topics/all",
+    );
+
+    return parcel;
   }
 
   Future<Parcel> findOne(String parcelId) async {
@@ -76,11 +95,18 @@ class DeliveryRepository {
     String? status,
   }) async {
     Map<String, dynamic> data = {};
-    data["delivery_man_id"] = deliveryManId;
-    data["delivery_man_name"] = deliveryManName;
-    data["delivery_man_phone"] = deliveryManPhone;
-    data["amount"] = amount;
-    data["status"] = status;
+    if (deliveryManId != null) {
+      data["delivery_man_id"] = deliveryManId;
+      data["delivery_man_name"] = deliveryManName;
+      data["delivery_man_phone"] = deliveryManPhone;
+    }
+    if (amount != null) {
+      data["amount"] = amount;
+    }
+    if (status != null) {
+      data["status"] = status;
+    }
+
     var doc = await apiClient.database.updateDocument(
       collectionId: CollectionIds.deliveries,
       documentId: parcelId,
@@ -92,7 +118,7 @@ class DeliveryRepository {
   Future<List<Parcel>> find({
     String? senderId,
     String? deliveryManId,
-    String? status,
+    List<String> status = const [],
     String? notSenderId,
   }) async {
     List queries = [];
@@ -102,7 +128,7 @@ class DeliveryRepository {
     if (notSenderId != null) {
       queries.add(Query.notEqual('sender_id', notSenderId));
     }
-    if (status != null) {
+    if (status.isNotEmpty) {
       queries.add(Query.equal('status', status));
     }
     if (deliveryManId != null) {
@@ -112,6 +138,8 @@ class DeliveryRepository {
     var docs = await apiClient.database.listDocuments(
       collectionId: CollectionIds.deliveries,
       queries: queries,
+      orderAttributes: ["created_at"],
+      orderTypes: ['DESC'],
     );
     var data = docs.documents
         .map(

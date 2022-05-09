@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:speedest_logistics/app/data/notification_client.dart';
 import 'package:speedest_logistics/parcels/data/repositories/city_repository.dart';
 import 'package:speedest_logistics/parcels/data/repositories/delivery_repository.dart';
 import 'package:speedest_logistics/profile/data/profile_repository.dart';
@@ -13,6 +14,9 @@ setupLocator() {
   locator.registerSingleton<ApiClient>(
     ApiClient(),
   );
+  locator.registerSingleton<NotificationClient>(
+    NotificationClient(locator.get<ApiClient>()),
+  );
   locator.registerSingleton<AuthService>(
     AuthService(apiClient: locator.get<ApiClient>()),
   );
@@ -24,7 +28,10 @@ setupLocator() {
     CityRepository(apiClient: locator.get<ApiClient>()),
   );
   locator.registerSingleton<DeliveryRepository>(
-    DeliveryRepository(apiClient: locator.get<ApiClient>()),
+    DeliveryRepository(
+      apiClient: locator.get<ApiClient>(),
+      notificationClient: locator.get<NotificationClient>(),
+    ),
   );
   locator.registerSingleton<ProfileCubit>(
     ProfileCubit(locator.get<ProfileRepository>()),

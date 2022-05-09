@@ -10,7 +10,10 @@ abstract class ParcelDetailsState {
 
 class ParcelDetailsInitial extends ParcelDetailsState {}
 
-class LoadParcelDetailsLoading extends ParcelDetailsState {}
+class LoadParcelDetailsLoading extends ParcelDetailsState {
+  const LoadParcelDetailsLoading({Parcel? parcel, List<Offer>? offers})
+      : super(parcel: parcel, offers: offers);
+}
 
 class LoadParcelDetailsSucess extends ParcelDetailsState {
   const LoadParcelDetailsSucess({Parcel? parcel, List<Offer>? offers})

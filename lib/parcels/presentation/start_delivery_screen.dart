@@ -221,6 +221,11 @@ class _StartDeliveryScreenState extends State<StartDeliveryScreen> {
                       Center(
                         child: GestureDetector(
                           onTap: () async {
+                            if (selectedCity == null ||
+                                from == null ||
+                                to == null) {
+                              return;
+                            }
                             var response =
                                 await Navigator.of(context).pushNamed(
                               RoutePath.sendParcel,
@@ -234,6 +239,9 @@ class _StartDeliveryScreenState extends State<StartDeliveryScreen> {
                               selectedCity = null;
                               from = null;
                               to = null;
+                              fromController.clear();
+                              toController.clear();
+                              cityController.clear();
                               setState(() {});
                               AppSnackbars.showSucess(
                                 context,

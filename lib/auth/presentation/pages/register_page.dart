@@ -1,4 +1,5 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:speedest_logistics/app/business_logic/cubit/application_cubit.dart';
@@ -69,7 +70,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 AppSnackbars.showError(context, message: state.message);
               });
             } else if (state is RegisterSucess) {
-              _loader.close().then((value) {
+              _loader.close().then((value) async {
+                Navigator.pop(context);
                 context
                     .read<ApplicationCubit>()
                     .yieldAuthenticatedUser(state.user);
@@ -170,18 +172,23 @@ class _RegisterPageState extends State<RegisterPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: RichText(
-                        text: const TextSpan(
+                        text: TextSpan(
                           text: "Vous avez deja un compte? ",
                           style: TextStyle(
                             color: AppColors.primaryGrayText,
                           ),
                           children: [
                             TextSpan(
-                              text: "Se connecter ",
-                              style: TextStyle(
-                                color: AppColors.primary,
-                              ),
-                            ),
+                                text: "Se connecter ",
+                                style: TextStyle(
+                                  color: AppColors.primary,
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    Navigator.of(context)
+                                        .pushNamedAndRemoveUntil(
+                                            RoutePath.login, (v) => false);
+                                  }),
                           ],
                         ),
                       ),
