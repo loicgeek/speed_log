@@ -32,7 +32,7 @@ platform :android do
     Dir.chdir "../.." do sh("flutter", "build", "apk","-t","./lib/main.dart","--release","-v") end # Call Flutter Build
       firebase_app_distribution(
         app: "1:785076994198:android:a07d644c7efea2fa0802b7",
-        testers: "loic.ngou98@gmail.com,",
+        testers: "loic.ngou98@gmail.com,leudjeuprince@gmail.com",
         release_notes: lane_context[SharedValues::FL_CHANGELOG],
         android_artifact_type: "APK",
         android_artifact_path: "../build/app/outputs/flutter-apk/app-release.apk"
