@@ -30,7 +30,7 @@ class Validators {
   }
 
   static String? required(String fieldName, String? value) {
-    if (value == null || (value.isEmpty)) return "$fieldName est obligatoire";
+    if (value == null || (value.isEmpty)) return "$fieldName is required";
     return null;
   }
 }

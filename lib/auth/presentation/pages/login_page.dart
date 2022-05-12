@@ -106,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AppButton(
-                          text: "Se Connecter",
+                          text: "Login",
                           bgColor: AppColors.primary,
                           textColor: Colors.white,
                           onTap: () async {
@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         AppButton(
-                          text: "Creer un compte",
+                          text: "Create account",
                           bgColor: Colors.black,
                           textColor: Colors.white,
                           onTap: () async {

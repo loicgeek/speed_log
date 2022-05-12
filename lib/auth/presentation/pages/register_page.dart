@@ -58,7 +58,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Creer un Compte"),
+        title: const Text("Create an account"),
       ),
       body: SingleChildScrollView(
         child: BlocConsumer<RegisterCubit, RegisterState>(
@@ -173,13 +173,13 @@ class _RegisterPageState extends State<RegisterPage> {
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: RichText(
                         text: TextSpan(
-                          text: "Vous avez deja un compte? ",
+                          text: "Already have an account? ",
                           style: TextStyle(
                             color: AppColors.primaryGrayText,
                           ),
                           children: [
                             TextSpan(
-                                text: "Se connecter ",
+                                text: "Login ",
                                 style: TextStyle(
                                   color: AppColors.primary,
                                 ),
