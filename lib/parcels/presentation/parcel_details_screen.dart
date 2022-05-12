@@ -238,6 +238,7 @@ class _ParcelDetailsScreenState extends State<ParcelDetailsScreen> {
       children: [
         if (state.parcel!.status == "started")
           FloatingActionButton(
+            heroTag: const ValueKey("track parcel"),
             key: const ValueKey("track parcel"),
             onPressed: () {
               Navigator.of(context).push(
@@ -264,12 +265,14 @@ class _ParcelDetailsScreenState extends State<ParcelDetailsScreen> {
           if (state.parcel!.status == 'started')
             FloatingActionButton.extended(
               label: const Text("Started"),
+              heroTag: const ValueKey("started delivering"),
               onPressed: () async {},
               tooltip: 'Start ',
               icon: const Icon(MaterialCommunityIcons.car),
             )
           else
             FloatingActionButton.extended(
+              heroTag: const ValueKey("start delivering"),
               label: const Text("Start"),
               onPressed: () async {
                 await context
